@@ -1,6 +1,9 @@
 package com.springBootApp.springBootApp.controller;
 
+import com.springBootApp.springBootApp.model.TeacherModel;
 import com.springBootApp.springBootApp.repository.TeacherRepository;
+
+//import com.springBootApp.springBootApp.repository.TeacherRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +17,16 @@ public class TeacherController {
     private TeacherRepository tr;
 
     @RequestMapping(value="/registerTeacher" , method = RequestMethod.GET)
-    // IndexService
     public ModelAndView getFormTeacher() {
         ModelAndView mv = new ModelAndView("teacher/teacher");
-
         return mv;
-        }    
-        
-    // public String form() {
-    //     return "formTeacher";
-    // }
+    }
+
+    @RequestMapping(value="/registerTeacher" , method = RequestMethod.POST)
+    public String form(TeacherModel formTeacher) {
+
+        tr.save(formTeacher);
+
+        return "redirect:/registerTeacher";
+    }
 }
