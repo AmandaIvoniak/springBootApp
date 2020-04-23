@@ -26,14 +26,14 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="teacherName">Nome do Professor</label>
-              <input type="text" class="form-control" id="teacherName" placeholder="Nome do Professor">
+              <input type="text" class="form-control" name="name" id="teacherName" placeholder="Nome do Professor">
             </div>
-            <div class="form-group col-md-6">
+            <!-- <div class="form-group col-md-6">
               <label for="className">Nome da Turma</label>
-              <input type="text" class="form-control" id="className" placeholder="Nome da Turma">
-            </div>
+              <input type="text" class="form-control" name="className" id="className" placeholder="Nome da Turma">
+            </div> -->
           </div>
-          <button type="submit" class="btn btn-primary pull-right">+</button>
+          <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
         </form>
       </div>
   </div>
@@ -42,35 +42,34 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Turma</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+  <tbody id="teacherInformation">
   </tbody>
 </table>
 </div>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</html>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var teacherList = document.getElementById("teacherInformation");
+      $.ajax({
+        type: "POST",
+        url: "/getTeacher",
+        success: function (data) {
+            var info = JSON.parse(JSON.stringify(data));
+            for (let i = 0; i < info.length; i++) {
+              teacherList.innerHTML += '<tr>'+
+                                          '<td>'+info[i].name+'</td>'+
+                                          '<td>'+info[i].id+'</td>'+
+                                        '</tr>';              
+            }
+        }
+    });  
+  }); 
+
+  </script>
+  </html>

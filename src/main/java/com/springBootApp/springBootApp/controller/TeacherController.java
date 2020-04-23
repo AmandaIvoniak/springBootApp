@@ -1,5 +1,7 @@
 package com.springBootApp.springBootApp.controller;
 
+import java.util.List;
+
 import com.springBootApp.springBootApp.model.TeacherModel;
 import com.springBootApp.springBootApp.repository.TeacherRepository;
 
@@ -16,17 +18,20 @@ public class TeacherController {
     @Autowired
     private TeacherRepository tr;
 
-    @RequestMapping(value="/registerTeacher" , method = RequestMethod.GET)
+    @RequestMapping(value="/registerTeacher", method = RequestMethod.GET)
     public ModelAndView getFormTeacher() {
         ModelAndView mv = new ModelAndView("teacher/teacher");
         return mv;
     }
 
-    @RequestMapping(value="/registerTeacher" , method = RequestMethod.POST)
+    @RequestMapping(value="/registerTeacher", method = RequestMethod.POST)
     public String form(TeacherModel formTeacher) {
-
         tr.save(formTeacher);
+        return "registerTeacher";
+    }
 
-        return "redirect:/registerTeacher";
+    @RequestMapping(value = "/getTeacher", method = RequestMethod.POST)
+    public List<TeacherModel> getList(TeacherModel formTeacher) {
+        return tr.findAll();
     }
 }
