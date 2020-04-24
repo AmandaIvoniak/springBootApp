@@ -7,53 +7,121 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+   <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">SpringBootTest</a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">Cadastrar Professor</a></li>
-          <li><a href="#">Cadastrar Turma</a></li>
-          <li><a href="#">Cadastrar Aluno</a></li>
-        </ul>
+         <div class="navbar-header">
+            <a class="navbar-brand" href="#">SpringBootTest</a>
+         </div>
+         <ul class="nav navbar-nav">
+            <li active><a href="#">Home</a></li>
+         </ul>
       </div>
-    </nav>
-    turmas cadastradas
-    <div class="container" style="margin-top:70px">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+   </nav>
+<!-- TURMA -->
+
+   <div class="container" style="margin-top:70px">
+      <div class="card">
+         <div class="card-body">
+            <form method="POST">
+               <div class="form-row">
+                  <div class="form-group col-md-6">
+                     <div class="col-4">
+                        <label for="className">Nome da Turma</label>
+                        <input type="text" class="form-control" name="teacher" id="className" placeholder="Nome da Turma">
+                     </div>
+                     <div class="col-4">
+                        <label for="teacherName">Nome do Professor</label>
+                        <input type="text" class="form-control" name="name" id="teacherName" placeholder="Nome do Professor">
+                     </div>
+                     <div class="col-4" style="margin-top: 10px;">
+                        <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
+                     </div>
+                  </div>
+               </div>          
+            </form>
+         </div>
       </div>
+   </div>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <table class="table">
+            <thead>
+               <tr>
+                  <th scope="col">Turma</th>
+                  <th scope="col">Professor</th>
+                  <th scope="col">Número de alunos</th>
+               </tr>
+            </thead>
+            <tbody id="teacherInformation">
+            </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+
+   <!-- ESTUDANTE -->
+   <div class="container" style="margin-top:70px">
+      <div class="card">
+         <div class="card-body">
+            <form method="POST">
+               <div class="form-row">
+                  <div class="form-group col-md-6">
+                     <div class="col-4">
+                        <label for="className">Nome da Turma</label>
+                        <input type="text" class="form-control" name="teacher" id="className" placeholder="Nome da Turma">
+                     </div>
+                     <div class="col-4">
+                        <label for="teacherName">Nome do Professor</label>
+                        <input type="text" class="form-control" name="name" id="teacherName" placeholder="Nome do Professor">
+                     </div>
+                     <div class="col-4" style="margin-top: 10px;">
+                        <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
+                     </div>
+                  </div>
+               </div>          
+            </form>
+         </div>
+      </div>
+   </div>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <table class="table">
+            <thead>
+               <tr>
+                  <th scope="col">Turma</th>
+                  <th scope="col">Professor</th>
+                  <th scope="col">Número de alunos</th>
+               </tr>
+            </thead>
+            <tbody id="teacherInformation">
+            </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</html>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var teacherList = document.getElementById("teacherInformation");
+      $.ajax({
+        type: "POST",
+        url: "/getClass",
+        success: function (data) {
+            var info = JSON.parse(JSON.stringify(data));
+            for (let i = 0; i < info.length; i++) {
+              teacherList.innerHTML += '<tr>'+
+                                          '<td>'+info[i].name+'</td>'+
+                                          '<td>'+info[i].teacher+'</td>'+
+                                          '<td>'+info[i].id+'</td>'+
+                                        '</tr>';
+            }
+        }
+    });  
+  }); 
+
+  </script>
+  </html>
