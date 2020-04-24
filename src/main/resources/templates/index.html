@@ -18,20 +18,19 @@
       </div>
    </nav>
 <!-- TURMA -->
-
-   <div class="container" style="margin-top:70px">
-      <div class="card">
+   <div class="container " style="margin-top:70px">
+      <div class="card col-md-6">
          <div class="card-body">
             <form method="POST">
                <div class="form-row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group">
                      <div class="col-4">
                         <label for="className">Nome da Turma</label>
-                        <input type="text" class="form-control" name="teacher" id="className" placeholder="Nome da Turma">
+                        <input type="text" class="form-control" name="name" id="className" placeholder="Nome da Turma">
                      </div>
                      <div class="col-4">
                         <label for="teacherName">Nome do Professor</label>
-                        <input type="text" class="form-control" name="name" id="teacherName" placeholder="Nome do Professor">
+                        <input type="text" class="form-control" name="teacher" id="teacherName" placeholder="Nome do Professor">
                      </div>
                      <div class="col-4" style="margin-top: 10px;">
                         <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
@@ -39,41 +38,34 @@
                   </div>
                </div>          
             </form>
+            <div class="row">
+                  <table class="table">
+                  <thead>
+                     <tr>
+                        <th scope="col">Turma</th>
+                        <th scope="col">Professor</th>
+                        <th scope="col">Número de alunos</th>
+                     </tr>
+                  </thead>
+                  <tbody id="classInformation">
+                  </tbody>
+                  </table>
+               </div>
          </div>
       </div>
-   </div>
-   <div class="container">
-      <div class="row">
-         <div class="col-md-6">
-            <table class="table">
-            <thead>
-               <tr>
-                  <th scope="col">Turma</th>
-                  <th scope="col">Professor</th>
-                  <th scope="col">Número de alunos</th>
-               </tr>
-            </thead>
-            <tbody id="teacherInformation">
-            </tbody>
-            </table>
-         </div>
-      </div>
-   </div>
-
    <!-- ESTUDANTE -->
-   <div class="container" style="margin-top:70px">
-      <div class="card">
+      <div class="card col-md-6">
          <div class="card-body">
-            <form method="POST">
+            <form method="POST" action="/saveStudent">
                <div class="form-row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group ">
                      <div class="col-4">
-                        <label for="className">Nome da Turma</label>
-                        <input type="text" class="form-control" name="teacher" id="className" placeholder="Nome da Turma">
+                        <label for="className">Turma</label>
+                        <input type="text" class="form-control" name="className" id="className" placeholder="Selecione uma Turma">
                      </div>
                      <div class="col-4">
-                        <label for="teacherName">Nome do Professor</label>
-                        <input type="text" class="form-control" name="name" id="teacherName" placeholder="Nome do Professor">
+                        <label for="teacherName">Nome do Aluno</label>
+                        <input type="text" class="form-control" name="student" id="student" placeholder="Nome do Aluno">
                      </div>
                      <div class="col-4" style="margin-top: 10px;">
                         <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
@@ -81,23 +73,19 @@
                   </div>
                </div>          
             </form>
-         </div>
-      </div>
-   </div>
-   <div class="container">
-      <div class="row">
-         <div class="col-md-6">
-            <table class="table">
-            <thead>
-               <tr>
-                  <th scope="col">Turma</th>
-                  <th scope="col">Professor</th>
-                  <th scope="col">Número de alunos</th>
-               </tr>
-            </thead>
-            <tbody id="teacherInformation">
-            </tbody>
-            </table>
+            <div class="row">
+                  <table class="table">
+                     <thead>
+                        <tr>
+                           <th scope="col">Turma</th>
+                           <th scope="col">Professor</th>
+                           <th scope="col">Número de alunos</th>
+                        </tr>
+                     </thead>
+                     <tbody id="studentInformation">
+                     </tbody>
+                  </table>
+            </div>
          </div>
       </div>
    </div>
@@ -106,16 +94,32 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
-      var teacherList = document.getElementById("teacherInformation");
+      var classList = document.getElementById("classInformation");
       $.ajax({
         type: "POST",
         url: "/getClass",
         success: function (data) {
             var info = JSON.parse(JSON.stringify(data));
             for (let i = 0; i < info.length; i++) {
-              teacherList.innerHTML += '<tr>'+
+               classList.innerHTML += '<tr>'+
                                           '<td>'+info[i].name+'</td>'+
                                           '<td>'+info[i].teacher+'</td>'+
+                                          '<td>'+info[i].id+'</td>'+
+                                        '</tr>';
+            }
+        }
+    });  
+
+    var studentList = document.getElementById("studentInformation");
+      $.ajax({
+        type: "POST",
+        url: "/getStudent",
+        success: function (data) {
+            var info = JSON.parse(JSON.stringify(data));
+            for (let i = 0; i < info.length; i++) {
+               studentList.innerHTML += '<tr>'+
+                                          '<td>'+info[i].className+'</td>'+
+                                          '<td>'+info[i].student+'</td>'+
                                           '<td>'+info[i].id+'</td>'+
                                         '</tr>';
             }

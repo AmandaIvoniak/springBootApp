@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StudentController {
+
     @Autowired
     private StudentRepository sr;
 
-    @RequestMapping(value="/", method = RequestMethod.POST)
+    @RequestMapping(value="/saveStudent", method = RequestMethod.POST)
     public String form(StudentModel formStudent) {
         sr.save(formStudent);
         return "/";
