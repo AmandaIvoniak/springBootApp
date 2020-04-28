@@ -14,7 +14,7 @@ public class StudentModel{
 
     private Long id;
     private String student;
-    private String className;
+    private Integer className;
 
     public Long getId() {
         return id;
@@ -28,11 +28,11 @@ public class StudentModel{
         this.student = student;
     }
 
-    public void setClassName(String className) {
+    public void setClassName(Integer className) {
         this.className = className;
     }
 
-    public String getClassName() {
+    public Integer getClassName() {
         return className;
     }
 

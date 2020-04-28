@@ -32,5 +32,6 @@ public class ClassServiceImplement implements ClassService{
 	@Override
 	public ClassModel save(ClassModel classModel) {
 		return classRepository.save(classModel);
-	}    
+	}
+
 }

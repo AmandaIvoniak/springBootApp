@@ -32,5 +32,5 @@ public class StudentServiceImplement implements StudentService{
 	@Override
 	public StudentModel save(StudentModel StudentModel) {
 		return studentRepository.save(StudentModel);
-	}    
+	}
 }

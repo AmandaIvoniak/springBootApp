@@ -1,6 +1,7 @@
 package com.springBootApp.springBootApp.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.springBootApp.springBootApp.model.ClassModel;
 import com.springBootApp.springBootApp.repository.ClassRepository;
@@ -15,13 +16,13 @@ public class ClassController {
     @Autowired
     private ClassRepository cr;
 
-    @RequestMapping(value="/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getFormClass() {
-        ModelAndView mv = new ModelAndView("index");
+        final ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 
-    @RequestMapping(value="/", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String form(ClassModel formClass) {
         cr.save(formClass);
         return "/";
@@ -31,4 +32,10 @@ public class ClassController {
     public List<ClassModel> getList(ClassModel formClass) {
         return cr.findAll();
     }
+
+    @RequestMapping(value = "/getClassById", method = RequestMethod.POST) // arrumar e criar um novo
+    public Optional<ClassModel> getListId(Long idClass) {
+        return cr.findById(idClass);
+    }
 }
+
