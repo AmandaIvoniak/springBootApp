@@ -2,78 +2,80 @@
 $(document).ready(function () {
   var allClasses;
   var allStudents;
-  getClass();
-  getStudentTable();
-  openClass();
-  $("#student").keyup(function(){
-    var nameValidate = $("#student").val();
-    if(nameValidate.length>=3) verifyName(nameValidate)
+
+  var ordenation = new Promise(function(resolve, reject){
+    resolve(getStudent());
   });
+  ordenation.then(getClass());
+  
+  // $("#student").keyup(function(){
+  //   var nameValidate = $("#student").val();
+  //   if(nameValidate.length>=3) verifyName(nameValidate)
+  // });
 });
 
-function verifyName(nameValidate){
-  var situation = false;
-  var btnSubmit = $("#btnSubmitStudent");
+// function verifyName(nameValidate){
+//   var situation = false;
+//   var btnSubmit = $("#btnSubmitStudent");
 
-  allStudents.forEach(element => {
-    if(element.student === nameValidate) situation = true;
-  });
-  situation === true ? btnSubmit.prop('disabled', true) : btnSubmit.prop('disabled', false);
-}
+//   allStudents.forEach(element => {
+//     if(element.student === nameValidate) situation = true;
+//   });
+//   situation === true ? btnSubmit.prop('disabled', true) : btnSubmit.prop('disabled', false);
+// }
 
 function getClass(){
-  var classList = document.getElementById("classInformation");
   $.ajax({
     type: "POST",
     url: "/getClass",
+    async:false,
     success: function (data) {
         var info = JSON.parse(JSON.stringify(data));
-        allClasses = info;
-        for (let i = 0; i < info.length; i++) {
-           classList.innerHTML += '<tr>'+
-                                      '<td>'+info[i].name+'</td>'+
-                                      '<td>'+info[i].teacher+'</td>'+
-                                      '<td>'+info[i].id+'</td>'+
-                                    '</tr>';
-        }
+        allClasses = info;        
     }
-  });  
+  });
+  createTables(allClasses, allStudents);
 }
 
-function getStudentTable(){
-  var studentList = document.getElementById("studentInformation");
+function getStudent(){
     $.ajax({
       type: "POST",
       url: "/getStudent",
+      async: false,
       success: function (data) {
-          var info = JSON.parse(JSON.stringify(data));
-          allStudents = info;
-          for (let i = 0; i < info.length; i++) {
-             studentList.innerHTML += '<tr>'+
-                                        '<td>'+info[i].className+'</td>'+
-                                        '<td>'+info[i].student+'</td>'+
-                                      '</tr>';
-          }
+        var info = JSON.parse(JSON.stringify(data));
+        allStudents = info;
       }
   });
 }
 
-function openClass(){
-  $.ajax({
-    type: "POST",
-    url: "/getClassOpen",
-    success: function (data) {
-        var info = JSON.parse(JSON.stringify(data));  
-        console.log(info)
-        var classSelect = document.getElementById("classSelect");
-        for (let i = 0; i < info.length; i++) {
-          classSelect.innerHTML += '<option value="'+info[i].id+'">'+info[i].className+'</option>';
-        }
+function createTables(allClasses, allStudents){  
+  var classSelect = document.getElementById("classSelect");
+  var classList = document.getElementById("classInformation");
+  var studentList = document.getElementById("studentInformation");
+
+  allClasses.forEach(element => {
+    var count = 0;
+    for (let i = 0; i < allStudents.length; i++) {
+      if(allStudents[i].className === element.id) count++;
     }
-  }); 
+    if(count <= 4) classSelect.innerHTML += '<option value="'+element.id+'">'+element.name+'</option>';
 
-  //IMPLEMENTAR OUTRO AJAX PARA PUXAR O NOME OU PUXAR DE UM JS QUE JA TROUXE
+    classList.innerHTML += '<tr>'+
+                                '<td>'+element.name+'</td>'+
+                                '<td>'+element.teacher+'</td>'+
+                                '<td>'+count+'</td>'+
+                              '</tr>';
+  })
+
+  allStudents.forEach(element => {
+    for (let i = 0; i < allClasses.length; i++) {
+      if(element.className === allClasses[i].id){
+        studentList.innerHTML += '<tr>'+
+                                '<td>'+allClasses[i].name+'</td>'+
+                                '<td>'+element.student+'</td>'+
+                              '</tr>';
+      }
+    }      
+  });
 }
-
-
-

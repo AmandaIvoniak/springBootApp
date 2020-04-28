@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.springBootApp.springBootApp.model.ClassModel;
 import com.springBootApp.springBootApp.repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,14 +19,15 @@ public class ClassController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getFormClass() {
-        final ModelAndView mv = new ModelAndView("index");
+        ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String form(ClassModel formClass) {
+    public ModelAndView form(ClassModel formClass) {
+        ModelAndView mv = new ModelAndView("index");        
         cr.save(formClass);
-        return "/";
+        return mv;
     }
 
     @RequestMapping(value = "/getClass", method = RequestMethod.POST)
