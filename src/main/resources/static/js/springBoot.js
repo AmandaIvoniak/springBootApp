@@ -7,22 +7,7 @@ $(document).ready(function () {
     resolve(getStudent());
   });
   ordenation.then(getClass());
-  
-  // $("#student").keyup(function(){
-  //   var nameValidate = $("#student").val();
-  //   if(nameValidate.length>=3) verifyName(nameValidate)
-  // });
 });
-
-// function verifyName(nameValidate){
-//   var situation = false;
-//   var btnSubmit = $("#btnSubmitStudent");
-
-//   allStudents.forEach(element => {
-//     if(element.student === nameValidate) situation = true;
-//   });
-//   situation === true ? btnSubmit.prop('disabled', true) : btnSubmit.prop('disabled', false);
-// }
 
 function getClass(){
   $.ajax({
@@ -53,9 +38,13 @@ function createTables(allClasses, allStudents){
   var classSelect = document.getElementById("classSelect");
   var classList = document.getElementById("classInformation");
   var studentList = document.getElementById("studentInformation");
+  var btnSubmit = $("#btnSubmitStudent");
 
+  allClasses.length === 0 ? btnSubmit.prop('disabled', true) : btnSubmit.prop('disabled', false);
+  
   allClasses.forEach(element => {
     var count = 0;
+
     for (let i = 0; i < allStudents.length; i++) {
       if(allStudents[i].className === element.id) count++;
     }
